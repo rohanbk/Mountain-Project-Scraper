@@ -3,3 +3,4 @@ env/
 .idea
 .scrapy
 *.pyc
+output/
