@@ -7,7 +7,7 @@ from scrapy.spiders import CrawlSpider, Rule
 class CoordinatesSpider(scrapy.Spider):
     name = 'coordinates'
     domain = 'https://www.mountainproject.com'
-    start_urls = [domain + '/v/hawaii/106316122']
+    start_urls = [domain + '/v/smith-rock/105788989']
     allowed_domains = ['mountainproject.com']
     rules = [
         Rule(
@@ -29,8 +29,8 @@ class CoordinatesSpider(scrapy.Spider):
         try:
             yield {
                 'area_name': area_name,
-                'parents': list(filter(lambda x: x != ' > ' and x != '\n\t\t\t\t', response.css('#navBox div ::text').extract())),
-                'child_areas': response.css('#viewerLeftNavColContent a[target="_top"] ::text').extract(),
+                'parents': list(map(lambda x: re.sub(r'\([A-Za-z0-9\.]+\)', '', x).strip(), filter(lambda x: x != ' > ' and x != '\n\t\t\t\t', response.css('#navBox div ::text').extract()))),
+                'child_areas': list(map(lambda x: re.sub(r'\([A-Za-z0-9\.]+\)', '', x).strip(), response.css('#viewerLeftNavColContent a[target="_top"] ::text').extract())),
                 'latitude' : lat_long_string.split(',')[0],
                 'longitude' : lat_long_string.split(',')[1]
             }
