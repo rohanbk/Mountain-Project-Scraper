@@ -3,6 +3,7 @@ import re
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
 
+AREA_PREFIXES = re.compile(r'\([A-Za-z0-9\.]+\)')
 
 class CoordinatesSpider(scrapy.Spider):
     name = 'coordinates'
@@ -23,16 +24,17 @@ class CoordinatesSpider(scrapy.Spider):
             yield scrapy.Request(self.domain + url, callback=self.parse_coordinates)
 
     def parse_coordinates(self, response):
-        area_name = re.sub(r'\([A-Za-z0-9\.]+\)', '', response.css('h1.dkorange em ::text').extract_first()).strip()
+        area_name = re.sub(AREA_PREFIXES, '', response.css('h1.dkorange em ::text').extract_first()).strip()
         lat_long_string = self.process_latitude_longitude(response)
 
         try:
             yield {
+                'id': response.url.split('com')[1],
                 'area_name': area_name,
-                'parents': list(map(lambda x: re.sub(r'\([A-Za-z0-9\.]+\)', '', x).strip(), filter(lambda x: x != ' > ' and x != '\n\t\t\t\t', response.css('#navBox div ::text').extract()))),
-                'child_areas': list(map(lambda x: re.sub(r'\([A-Za-z0-9\.]+\)', '', x).strip(), response.css('#viewerLeftNavColContent a[target="_top"] ::text').extract())),
-                'latitude' : lat_long_string.split(',')[0],
-                'longitude' : lat_long_string.split(',')[1]
+                'parents': list(map(lambda x: re.sub(AREA_PREFIXES, '', x).strip(), filter(lambda x: x != ' > ' and x != '\n\t\t\t\t', response.css('#navBox div ::text').extract()))),
+                'child_areas': list(map(lambda x: re.sub(AREA_PREFIXES, '', x).strip(), response.css('#viewerLeftNavColContent a[target="_top"] ::text').extract())),
+                'latitude': lat_long_string.split(',')[0],
+                'longitude': lat_long_string.split(',')[1]
             }
         except IndexError:
             pass
