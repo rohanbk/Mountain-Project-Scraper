@@ -5,10 +5,11 @@ from scrapy.spiders import Rule
 
 AREA_PREFIXES = re.compile(r'(\([A-Za-z0-9\.]+\))|\"')
 
+
 class CoordinatesSpider(scrapy.Spider):
     name = 'coordinates'
     domain = 'https://www.mountainproject.com'
-    start_urls = [domain + '/v/hawaii/106316122']
+    start_urls = [domain + '/destinations']
     allowed_domains = ['mountainproject.com']
     rules = [
         Rule(
@@ -19,7 +20,7 @@ class CoordinatesSpider(scrapy.Spider):
     ]
 
     def parse(self, response):
-        links = response.css('#viewerLeftNavColContent a[target="_top"] ::attr(href)').extract()
+        links = response.css('span.destArea a::attr(href)').extract()
         for url in links:
             yield scrapy.Request(self.domain + url, callback=self.parse_coordinates)
 
