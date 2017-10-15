@@ -1,14 +1,14 @@
 import scrapy
 import re
 from scrapy.linkextractors import LinkExtractor
-from scrapy.spiders import CrawlSpider, Rule
+from scrapy.spiders import Rule
 
-AREA_PREFIXES = re.compile(r'\([A-Za-z0-9\.]+\)')
+AREA_PREFIXES = re.compile(r'(\([A-Za-z0-9\.]+\))|\"')
 
 class CoordinatesSpider(scrapy.Spider):
     name = 'coordinates'
     domain = 'https://www.mountainproject.com'
-    start_urls = [domain + '/v/smith-rock/105788989']
+    start_urls = [domain + '/v/hawaii/106316122']
     allowed_domains = ['mountainproject.com']
     rules = [
         Rule(
@@ -29,10 +29,10 @@ class CoordinatesSpider(scrapy.Spider):
 
         try:
             yield {
-                'id': response.url.split('com')[1],
                 'area_name': area_name,
-                'parents': list(map(lambda x: re.sub(AREA_PREFIXES, '', x).strip(), filter(lambda x: x != ' > ' and x != '\n\t\t\t\t', response.css('#navBox div ::text').extract()))),
-                'child_areas': list(map(lambda x: re.sub(AREA_PREFIXES, '', x).strip(), response.css('#viewerLeftNavColContent a[target="_top"] ::text').extract())),
+                'id': response.url.split('com')[1],
+                'parents': response.css('#navBox div a::attr(href)').extract(),
+                'child_areas': response.css('#viewerLeftNavColContent a[target="_top"] ::attr(href)').extract(),
                 'latitude': lat_long_string.split(',')[0],
                 'longitude': lat_long_string.split(',')[1]
             }
@@ -43,7 +43,7 @@ class CoordinatesSpider(scrapy.Spider):
             yield scrapy.Request(self.domain + url, callback=self.parse_coordinates)
 
     def process_latitude_longitude(self,response):
-        if "Location" not in response.css('#rspCol800 div.rspCol table tr:nth-child(2) td ::text').extract()[0]:
+        if 'Location' not in response.css('#rspCol800 div.rspCol table tr:nth-child(2) td ::text').extract()[0]:
             return response.css('#rspCol800 div.rspCol table tr:nth-child(3) td ::text').extract()[1].strip()
         else:
             return response.css('#rspCol800 div.rspCol table tr:nth-child(2) td ::text').extract()[1].strip()
