@@ -1,87 +1,76 @@
-# Project Title
+[![Build Status](https://travis-ci.org/rohanbk/Mountain-Project-Scraper.svg?branch=master)](https://travis-ci.org/rohanbk/Mountain-Project-Scraper/)
 
-One Paragraph of project description goes here
+# Mountain Project Scraper
+
+This is a Scrapy-powered Web-Scraper written in Python 3.6 which is capable of scraping (Mountain Project)[https://www.mountainproject.com/], a popular online guide of thousands of rock-climbing routes around the world.
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
+- Python
+- Pip
+- Scrapy
+- VirtualEnv
 
 ### Installing
 
 A step by step series of examples that tell you have to get a development env running
 
-Say what the step will be
+Pull the code down from Github
 
 ```
-Give the example
+git clone https://github.com/rohanbk/Mountain-Project-Scraper
 ```
 
-And repeat
-
+Install PIP
 ```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
+Instructions available here: https://pip.readthedocs.io/en/stable/installing/
 ```
 
-### And coding style tests
-
-Explain what these tests test and why
-
+Install VirtualEnv
 ```
-Give an example
+[sudo] pip install virtualenv
 ```
 
-## Deployment
+Install Scrapy
+```
+pip install Scrapy
+```
 
-Add additional notes about how to deploy this on a live system
+Enter the cloned project and setup a Virtual Environment
 
-## Built With
+```
+cd steam-scraper
+virtualenv -p python3.6 env
+. env/bin/activate
+```
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+## Running the Scraper
 
-## Contributing
+By default, the Spider will run and scrape using the contents of the ```start_urls``` list.
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+Enter the Scraper project
+```
+cd mountain_project_scraper
+```
 
-## Versioning
+Run the coordinates scraper
+```
+scrapy crawl coordinates -o [file_path of output file]
+```
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
+To play around with the markup for a single page (i.e. good way to debug or play around with CSS/Xpath selectors)
+```
+scrapy shell [url]
+```
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+* Rohan Balakrishnan
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone who's code was used
-* Inspiration
-* etc
