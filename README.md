@@ -2,7 +2,7 @@
 
 # Mountain Project Scraper
 
-This is a Scrapy-powered Web-Scraper written in Python 3.6 which is capable of scraping (Mountain Project)[https://www.mountainproject.com/], a popular online guide of thousands of rock-climbing routes around the world.
+This is a Scrapy-powered Web-Scraper written in Python 3.6 which is capable of scraping [Mountain Project](https://www.mountainproject.com/), a popular online guide of thousands of rock-climbing routes around the world.
 
 ## Getting Started
 
