@@ -6,12 +6,12 @@ from scrapy.spiders import Rule
 AREA_PREFIXES = re.compile(r'(\([A-Za-z0-9\.]+\))|\"|\u0092|\u0091|\{\d+\}|\d+\)')
 
 
-class CoordinatesSpider(scrapy.Spider):
-    name = 'coordinates'
+class AreasSpider(scrapy.Spider):
+    name = 'areas'
     domain = 'https://www.mountainproject.com'
 
     # format should be /destinations or /v/STATENAME/ID
-    relativeURL = '/v/washington/105708966'
+    relativeURL = '/v/hawaii/106316122'
 
     start_urls = [domain + relativeURL]
     allowed_domains = ['mountainproject.com']
