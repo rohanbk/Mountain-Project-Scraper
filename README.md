@@ -55,9 +55,9 @@ Enter the Scraper project
 cd mountain_project_scraper
 ```
 
-Run the coordinates scraper
+Run the Areas Spider (will crawl all area pages i.e. not route or boulder problem description pages)
 ```
-scrapy crawl coordinates -o [file_path of output file]
+scrapy crawl areas -o [file_path of output file]
 ```
 
 To play around with the markup for a single page (i.e. good way to debug or play around with CSS/Xpath selectors)
