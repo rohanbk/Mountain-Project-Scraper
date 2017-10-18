@@ -2,7 +2,7 @@
 
 # Mountain Project Scraper
 
-This is a Scrapy-powered Web-Scraper written in Python 3.6 which is capable of scraping (Mountain Project)[https://www.mountainproject.com/], a popular online guide of thousands of rock-climbing routes around the world.
+This is a Scrapy-powered Web-Scraper written in Python 3.6 which is capable of scraping [Mountain Project](https://www.mountainproject.com/), a popular online guide of thousands of rock-climbing routes around the world.
 
 ## Getting Started
 
@@ -26,9 +26,8 @@ git clone https://github.com/rohanbk/Mountain-Project-Scraper
 ```
 
 Install PIP
-```
-Instructions available here: https://pip.readthedocs.io/en/stable/installing/
-```
+Instructions available here: [https://pip.readthedocs.io/en/stable/installing/](https://pip.readthedocs.io/en/stable/installing/)
+
 
 Install VirtualEnv
 ```
@@ -41,9 +40,8 @@ pip install Scrapy
 ```
 
 Enter the cloned project and setup a Virtual Environment
-
 ```
-cd steam-scraper
+cd mountain_project_scraper
 virtualenv -p python3.6 env
 . env/bin/activate
 ```
@@ -66,7 +64,23 @@ To play around with the markup for a single page (i.e. good way to debug or play
 ```
 scrapy shell [url]
 ```
+## Debugging the Scraper
 
+I use Intellij as my IDE of choice. In order to debug the Scraper/Spider code, utilize the following instructions: 
+
+Create a new Run/Debug Configuration with the following parameters
+
+```
+* Script: [path to scraper project]/env/bin/scrapy # This folder will get setup when you execute the virtualenv setup above
+* Script Parameters: crawl [Spider name] # e.g. crawl coordinates
+* Environment Variables: PYTHONUNBUFFERED=1
+* Python Interpreter: There should be a dropdown option with an interpreter located in the env folder
+* Working Directory: [Path to Scraper]/env/bin
+* Add Content Roots to PYTHONPATH: Checked
+* Add Source Roots to PYTHONPATH: Checked
+
+All other options are default
+```
 ## Authors
 
 * Rohan Balakrishnan
