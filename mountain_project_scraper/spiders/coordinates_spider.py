@@ -3,7 +3,7 @@ import re
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import Rule
 
-AREA_PREFIXES = re.compile(r'(\([A-Za-z0-9\.]+\))|\"|\u0092|\u0091')
+AREA_PREFIXES = re.compile(r'(\([A-Za-z0-9\.]+\))|\"|\u0092|\u0091|\{\d+\}|\d+\)')
 
 
 class CoordinatesSpider(scrapy.Spider):
@@ -11,7 +11,7 @@ class CoordinatesSpider(scrapy.Spider):
     domain = 'https://www.mountainproject.com'
 
     # format should be /destinations or /v/STATENAME/ID
-    relativeURL = '/v/hawaii/106316122'
+    relativeURL = '/v/washington/105708966'
 
     start_urls = [domain + relativeURL]
     allowed_domains = ['mountainproject.com']
