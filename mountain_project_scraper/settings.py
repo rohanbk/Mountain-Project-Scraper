@@ -13,6 +13,7 @@ BOT_NAME = 'mountain_project_scraper'
 
 SPIDER_MODULES = ['mountain_project_scraper.spiders']
 NEWSPIDER_MODULE = 'mountain_project_scraper.spiders'
+FEED_FORMAT : 'json'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
