@@ -3,14 +3,17 @@ import re
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import Rule
 
-AREA_PREFIXES = re.compile(r'(\([A-Za-z0-9\.]+\))|\"|\u0092|\u0091|\{\d+\}|\d+\)')
+# Regex to catch all weird prefixes and characters that may be found in area names
+# e.g. {1}, (1), ', etc.
+CLIMBING_AREA_PREFIXES = re.compile(r'(\([A-Za-z0-9\.]+\))|\"|\u0092|\u0091|\{\d+\}|\d+\)')
 
 
-class AreasSpider(scrapy.Spider):
-    name = 'areas'
+class ClimbingAreasSpider(scrapy.Spider):
+    name = 'climbing_areas'
     domain = 'https://www.mountainproject.com'
 
-    # format should be /destinations or /v/STATENAME/ID
+    # URL should be preceded by a /
+    # e.g. /destinations or /v/STATENAME/ID
     relativeURL = '/v/hawaii/106316122'
 
     start_urls = [domain + relativeURL]
@@ -24,16 +27,18 @@ class AreasSpider(scrapy.Spider):
     ]
 
     def parse(self, response):
-        # use the following links variable if testing from an individual state page (e.g. WA states routes)
-        links = response.css('#viewerLeftNavColContent a[target="_top"] ::attr(href)').extract()
+        if self.relativeURL != '/destinations':
+            # use the following links variable if testing from an individual state page (e.g. WA states routes)
+            links = response.css('#viewerLeftNavColContent a[target="_top"] ::attr(href)').extract()
+        else:
+            # use the following links variable if testing from the homepage
+            links = response.css('span.destArea a::attr(href)').extract()
 
-        # use the following links variable if testing from the homepage
-        # links = response.css('span.destArea a::attr(href)').extract()
         for url in links:
             yield scrapy.Request(self.domain + url, callback=self.parse_coordinates)
 
     def parse_coordinates(self, response):
-        area_name = re.sub(AREA_PREFIXES, '', response.css('h1.dkorange em ::text').extract_first()).strip()
+        area_name = re.sub(CLIMBING_AREA_PREFIXES, '', response.css('h1.dkorange em ::text').extract_first()).strip()
         lat_long_string = self.process_latitude_longitude(response)
 
         try:
